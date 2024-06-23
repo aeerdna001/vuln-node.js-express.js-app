@@ -8,7 +8,7 @@ let db_path = path.join(__dirname+ "/../../db/", 'db.sqlite')
 //console.log("Database path:",db_path)
 
 const config = {
-    PORT: process.env.APP_PORT || 5000,
+    PORT: process.env.APP_PORT || 8081,
     jwtSecret: process.env.JWT_SECRET | "superSecretPassword",
 
     //env variables
