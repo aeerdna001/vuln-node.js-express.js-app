@@ -31,7 +31,7 @@ WORKDIR /home/$user/src
 
 COPY --from=builder /build ./
 
-COPY ./db/sqlite.db /home/$user/src/db/sqlite.db
+COPY ./db/db.sqlite /home/$user/src/db/db.sqlite
 RUN chown -R $user:$user /home/$user/src/db && chmod -R 755 /home/$user/src/db
 
 RUN npm rebuild
