@@ -29,10 +29,15 @@ WORKDIR /home/$user/src
 
 COPY --from=builder /build ./
 
+COPY ./db/sqlite.db /home/$user/src/db/sqlite.db
+
+RUN chown -R $user:$user /home/$user/src
+
 RUN npm rebuild
 
 EXPOSE 8081
 
 ENV NODE_ENV=development
+ENV DATABASE_URL=/home/$user/src/db/sqlite.db
 
 CMD ["npm", "start"]
