@@ -26,15 +26,13 @@ RUN apk add --no-cache \
 ENV user=node
 USER $user
 
-RUN mkdir -p /home/$user/src
+RUN mkdir -p /home/$user/src /home/$user/src/db
 WORKDIR /home/$user/src
 
 COPY --from=builder /build ./
 
-COPY ./db/db.sqlite /home/$user/src/db/db.sqlite
-COPY ./.env /home/$user/src/.env
-
-RUN chown -R $user:$user /home/$user/src
+COPY ./db/sqlite.db /home/$user/src/db/sqlite.db
+RUN chown -R $user:$user /home/$user/src/db && chmod -R 755 /home/$user/src/db
 
 RUN npm rebuild
 
