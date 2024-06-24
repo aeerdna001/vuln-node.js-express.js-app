@@ -1,5 +1,7 @@
+# Use an Alpine image with Node.js
 FROM node:18-alpine as builder
 
+# Install build dependencies
 RUN apk add --no-cache \
     build-base \
     python3 \
@@ -23,14 +25,16 @@ RUN apk add --no-cache \
 
 ENV user=node
 
-RUN mkdir -p /home/$user/src /home/$user/src/db
+# Creează directorul ca root și setează permisiunile
+RUN mkdir -p /home/$user/src /home/$user/src/db /home/$user/src/uploads
+RUN chown -R $user:$user /home/$user/src && chmod -R 755 /home/$user/src
+
 WORKDIR /home/$user/src
 
 COPY --from=builder /build ./
 
+# Copiază fișierul bazei de date în container
 COPY ./db/db.sqlite /home/$user/src/db/db.sqlite
-
-RUN chown -R $user:$user /home/$user/src/db && chmod -R 755 /home/$user/src/db
 
 USER $user
 
