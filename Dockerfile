@@ -1,7 +1,5 @@
-# Use an Alpine image with Node.js
 FROM node:18-alpine as builder
 
-# Install build dependencies
 RUN apk add --no-cache \
     build-base \
     python3 \
@@ -19,7 +17,9 @@ COPY . /build
 FROM node:18-alpine
 
 RUN apk add --no-cache \
-    libxml2-dev
+    libxml2-dev \
+    build-base \
+    python3
 
 ENV user=node
 USER $user
@@ -28,6 +28,8 @@ RUN mkdir -p /home/$user/src
 WORKDIR /home/$user/src
 
 COPY --from=builder /build ./
+
+RUN npm rebuild
 
 EXPOSE 8081
 
